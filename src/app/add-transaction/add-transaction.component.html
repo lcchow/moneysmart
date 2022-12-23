@@ -1,0 +1,40 @@
+
+<h1>Add Transaction</h1>
+
+<form>
+    <table>
+        <tr>
+            <td><label for="add-date">Date</label></td>
+            <td><input type="date" id="add-date" formControlName="date"></td>
+        </tr> 
+        <tr>
+            <td><label for="add-type" formControlName="type">Income/Expense</label></td>
+            <td>
+                <select>
+                    <option>Income</option>
+                    <option>Expense</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Category</td>
+            <td>
+                <select formControlName="category">
+                    <option *ngFor="let cat of categories">{{ cat }} </option>
+                </select>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td><input type="text" formControlName="description"></td>
+        </tr>
+        <tr>
+            <td>Amount</td>
+            <td><input type="number" formControlName="amount"></td>
+        </tr>
+    </table>
+
+    <button>Add Transaction</button>
+</form>
+<button (click)="onCancel()">Cancel</button>

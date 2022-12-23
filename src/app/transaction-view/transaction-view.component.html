@@ -1,0 +1,29 @@
+<h1 *ngIf="user$ | async as user">USERNAME: {{ user.email }} </h1>
+
+<h1>Transaction List</h1>
+
+<table class="table table-bordered">
+    <thead>
+        <th>Date</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Amount</th>
+
+    </thead>
+    <tbody>
+        <tr *ngFor="let txn of txnList">
+            <td>{{ txn.date }}</td>
+            <td>{{ txn.type }}</td>
+            <td>{{ txn.category }}</td>
+            <td>{{ txn.desc }}</td>
+            <td>{{ txn.amount }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button class="btn btn-primary" (click)="onAdd()">Add Transaction</button>
+
+<button (click)="onLogout()">TEST</button>
+
+
