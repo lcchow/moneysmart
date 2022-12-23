@@ -1,6 +1,17 @@
 <!-- <app-transaction-view></app-transaction-view> -->
 <mat-toolbar color="primary">
-Money Smart
+<h1>Money Smart</h1>
+
+
+<div *ngIf="authService.currentUser$ | async as user; else login">
+    <span>{{ user.email }}</span>
+    <button mat-flat-button color="accent" (click)="onLogout()">Logout</button>
+</div>
+
+<ng-template #login>
+    <button mat-flat-button color="accent" (click)="onLogin()">Login</button></ng-template>
+
 </mat-toolbar>
+
 
 <router-outlet></router-outlet>

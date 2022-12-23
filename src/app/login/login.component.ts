@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup,FormControl } from '@angular/forms';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
 
   form: FormGroup
 
-  constructor(public authService:AuthenticationService) {
+  constructor(private authService:AuthenticationService, private router:Router) {
     
     let formControls = {
       username: new FormControl(""),
@@ -26,5 +27,8 @@ export class LoginComponent {
     const user = values.username
     const pass = values.password
     this.authService.login(user,pass)
+    // this.authService.login(user,pass).subscribe(() => {
+    //   this.router.navigate(['home']);
+    // })
   }
 }

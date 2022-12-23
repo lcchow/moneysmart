@@ -30,7 +30,16 @@ export class AuthenticationService {
   // }
 
   login (username:string, password:string) {
-    return from(signInWithEmailAndPassword(this.auth,username,password))
+    return from(signInWithEmailAndPassword(this.auth,username,password)
+                .then((userCredential) => {
+                  const user = userCredential.user
+                  this.router.navigate(['/home'])
+                })
+                .catch ((error) => {
+                  const errorCode = error.code;
+                  const errorMessage = error.message;
+                  alert(errorMessage)
+                }))
   }
 
   logout() {
