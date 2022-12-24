@@ -1,10 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { AuthenticationService } from './authentication.service';
+import { initializeApp } from 'firebase/app';
+import { environment } from 'src/environments/environment';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class TrackerService {
+
+  user$ = this.authService.currentUser$
+
+  app = initializeApp(environment.firebase)
+  db = getFirestore(this.app)
 
   txnList = [
     {date: "dec 15, 2022",type:"expense",category:"food",desc:"restaurant",amount:100.54},
@@ -29,9 +40,14 @@ export class TrackerService {
     "Gift"
   ]
 
-  
+  constructor(private http:HttpClient, private authService:AuthenticationService,
+    ) {
+  }
 
-  constructor(private http:HttpClient) {
+  get CurrentUser$() {
+    return this.authService.currentUser$.pipe(
+
+    )
   }
 
   getTxnList() {
@@ -49,6 +65,22 @@ export class TrackerService {
     })
     
   }
+
+  test() {
+    console.log(this.authService.currentUser)
+  }
+
+  async test2() {
+    try {
+      (await getDocs(collection(this.db, "User","leslie@test.com","Transactions"))).forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()["Amount"]}`);
+      })
+    }
+    catch(error){
+      console.log(error)
+    }
+  }
+
 
   // add() {
   //   this.http.post()

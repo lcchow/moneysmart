@@ -5,6 +5,7 @@
 
 <div *ngIf="authService.currentUser$ | async as user; else login">
     <span>{{ user.email }}</span>
+    <span><button mat-mini-fab color="accent" (click)="onHome()"><mat-icon>home</mat-icon></button></span>
     <button mat-flat-button color="accent" (click)="onLogout()">Logout</button>
 </div>
 

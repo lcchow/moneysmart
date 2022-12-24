@@ -29,4 +29,13 @@ export class AppComponent {
     })
   }
 
+  onHome() {
+    if (this.authService.currentUser$) {
+      this.router.navigate(['/home']);
+    } else {
+      this.router.navigate(['/'])
+    }
+
+  }
+
 }

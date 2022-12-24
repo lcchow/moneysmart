@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthenticationService {
-
+  currentUser: any
   currentUser$ = authState(this.auth);
 
   constructor(private auth:Auth, private router:Router) { }
@@ -32,7 +32,8 @@ export class AuthenticationService {
   login (username:string, password:string) {
     return from(signInWithEmailAndPassword(this.auth,username,password)
                 .then((userCredential) => {
-                  const user = userCredential.user
+                  this.currentUser = userCredential.user
+                  console.log("LOGIN",this.currentUser)
                   this.router.navigate(['/home'])
                 })
                 .catch ((error) => {

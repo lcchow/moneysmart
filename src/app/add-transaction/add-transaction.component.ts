@@ -29,7 +29,7 @@ export class AddTransactionComponent {
   }
 
   onCancel() {
-    this.router.navigate(["/"])
+    this.router.navigate(["/home"])
   }
 
   onAdd() {

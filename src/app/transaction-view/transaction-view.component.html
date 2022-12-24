@@ -1,4 +1,4 @@
-<h1 *ngIf="user$ | async as user">USERNAME: {{ user.email }} </h1>
+<h1 *ngIf="user">USERNAME: {{ user.email }} </h1>
 
 <h1>Transaction List</h1>
 
@@ -24,6 +24,6 @@
 
 <button class="btn btn-primary" (click)="onAdd()">Add Transaction</button>
 
-<button (click)="onLogout()">TEST</button>
+<button (click)="test()">TEST</button>
 
 

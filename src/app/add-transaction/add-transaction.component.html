@@ -1,16 +1,17 @@
 
 <h1>Add Transaction</h1>
 
-<form>
+<form
+[formGroup] = "form">
     <table>
         <tr>
             <td><label for="add-date">Date</label></td>
             <td><input type="date" id="add-date" formControlName="date"></td>
         </tr> 
         <tr>
-            <td><label for="add-type" formControlName="type">Income/Expense</label></td>
+            <td><label for="add-type">Income/Expense</label></td>
             <td>
-                <select>
+                <select formControlName="type">
                     <option>Income</option>
                     <option>Expense</option>
                 </select>
@@ -35,6 +36,6 @@
         </tr>
     </table>
 
-    <button>Add Transaction</button>
+    <button mat-raised-button color="primary">Add Transaction</button>
 </form>
-<button (click)="onCancel()">Cancel</button>
+<button mat-raised-button color="basic" (click)="onCancel()">Cancel</button>
