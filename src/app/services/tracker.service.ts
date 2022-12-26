@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 import { AuthenticationService } from './authentication.service';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 
 
@@ -26,6 +27,8 @@ export class TrackerService {
     {date: "mar 12, 2022",type:"expense",category:"gift",desc:"computer game",amount:48.50}
   ]
 
+  transactionList: any[]
+
   categories = [
     "Food",
     "Housing",
@@ -42,6 +45,7 @@ export class TrackerService {
 
   constructor(private http:HttpClient, private authService:AuthenticationService,
     ) {
+      this.transactionList = []
   }
 
   get CurrentUser$() {
@@ -66,23 +70,56 @@ export class TrackerService {
     
   }
 
+  async getTransactions(username:string) {
+    try {
+      this.transactionList = [];
+      (await getDocs(collection(this.db, "User",username,"Transactions"))).forEach((doc) => {
+        console.log(`${doc.id} => ${doc.data()}`);
+        //let transaction = {Amount:`${doc.data()["Amount"]}`}
+        this.transactionList.push({
+          Date:`${doc.data()["Date"]}`,
+          Type:`${doc.data()["Type"]}`,
+          Category:`${doc.data()["Category"]}`,
+          Description:`${doc.data()["Description"]}`,
+          Amount:`${doc.data()["Amount"]}`,
+        })
+      })
+      console.log("get",this.transactionList)
+      return this.transactionList
+      //return this.transactionList
+    }
+    catch(error){
+      console.log(error)
+      return null
+    }
+  }
+
+  getTransactionList() {
+    return this.transactionList
+  }
+
+  async addTransaction(email:string,date:number,type:string,category:string,desc:string,amount:number) {
+    try {
+      (await addDoc(collection(this.db,"User",email,"Transactions"), {
+        Date: date,
+        Type: type,
+        Category: category,
+        Description: desc,
+        Amount: amount 
+        }
+      
+      ))
+      console.log("Adding for",email)
+    } catch(error) {
+      console.log(error)
+    }
+
+  }
+
   test() {
     console.log(this.authService.currentUser)
   }
 
-  async test2() {
-    try {
-      (await getDocs(collection(this.db, "User","leslie@test.com","Transactions"))).forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()["Amount"]}`);
-      })
-    }
-    catch(error){
-      console.log(error)
-    }
-  }
 
 
-  // add() {
-  //   this.http.post()
-  // }
 }

@@ -12,12 +12,12 @@
 
     </thead>
     <tbody>
-        <tr *ngFor="let txn of txnList">
-            <td>{{ txn.date }}</td>
-            <td>{{ txn.type }}</td>
-            <td>{{ txn.category }}</td>
-            <td>{{ txn.desc }}</td>
-            <td>{{ txn.amount }}</td>
+        <tr *ngFor="let txn of transactionList">
+            <td>{{ txn.Date}}</td>
+            <td>{{ txn.Type }}</td>
+            <td>{{ txn.Category }}</td>
+            <td>{{ txn.Description }}</td>
+            <td>{{ txn.Amount }}</td>
         </tr>
     </tbody>
 </table>

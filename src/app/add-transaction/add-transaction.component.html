@@ -2,7 +2,8 @@
 <h1>Add Transaction</h1>
 
 <form
-[formGroup] = "form">
+[formGroup] = "form"
+(ngSubmit) = onAdd(form.value)>
     <table>
         <tr>
             <td><label for="add-date">Date</label></td>
@@ -36,6 +37,6 @@
         </tr>
     </table>
 
-    <button mat-raised-button color="primary">Add Transaction</button>
+    <button mat-raised-button color="primary" [disabled]="!form.valid">Add Transaction</button>
 </form>
 <button mat-raised-button color="basic" (click)="onCancel()">Cancel</button>

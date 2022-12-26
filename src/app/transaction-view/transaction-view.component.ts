@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TrackerService } from '../services/tracker.service';
 import { AuthenticationService } from '../services/authentication.service';
-import { user } from '@angular/fire/auth';
+import { getAuth, onAuthStateChanged, user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-transaction-view',
@@ -10,30 +10,50 @@ import { user } from '@angular/fire/auth';
   styleUrls: ['./transaction-view.component.css']
 })
 export class TransactionViewComponent implements OnInit {
-  txnList: any[]
+  transactionList: any[] | null
+  username: any
   //user$ = this.authService.currentUser$
   user= this.authService.currentUser
 
   constructor(private ts:TrackerService, private router:Router, 
-    private authService:AuthenticationService) {
-    this.txnList = this.ts.getTxnList();
+    private authService:AuthenticationService, private route:ActivatedRoute) {
+    this.transactionList = [];
   }
 
   ngOnInit() {
-    this.ts.test2()
+    
+    const auth = getAuth()
+    onAuthStateChanged(auth,async (user) => {
+      if (user) {
+        this.username = user
+        console.log("tview",this.username);
+
+      } else {
+        console.log("Tview Not Logged In")
+      }
+    })
+
+    this.transactionList = this.ts.getTransactionList();
+    console.log(this.route.snapshot.data);
+    console.log(this.transactionList)
+
+
+    // await this.ts.getTransactions(this.username.email);
+    // console.log(this.transactionList)
   }
 
   onAdd() {
     this.router.navigate(["/add"])
   }
 
-  test() {
-    //console.log(this.authService.currentUser)
-    //this.ts.test();
-    this.ts.test2();
+  async test() {
+    //console.log(this.username.email)
+    //console.log(await this.ts.getTransactions(this.username.email))
+    //console.log("LIST:",this.ts.getTransactionList())
   }
 
   onLogout() {
+    this.transactionList=[]
     this.authService.logout().subscribe(() => {
       this.router.navigate(['']);
     });

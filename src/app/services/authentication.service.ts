@@ -34,7 +34,7 @@ export class AuthenticationService {
                 .then((userCredential) => {
                   this.currentUser = userCredential.user
                   console.log("LOGIN",this.currentUser)
-                  this.router.navigate(['/home'])
+                  this.router.navigate(['/home',this.currentUser.email])
                 })
                 .catch ((error) => {
                   const errorCode = error.code;
