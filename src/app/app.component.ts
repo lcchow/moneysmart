@@ -26,7 +26,7 @@ export class AppComponent implements OnInit {
     onAuthStateChanged(auth,(user) => {
       if (user) {
         this.username = user
-        console.log(this.username)
+        //console.log(this.username)
       } else {
         console.log("Init Not Logged In")
       }

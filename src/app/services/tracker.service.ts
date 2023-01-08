@@ -5,6 +5,7 @@ import { AuthenticationService } from './authentication.service';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { getAuth } from 'firebase/auth';
 
 
 
@@ -60,33 +61,53 @@ export class TrackerService {
     this.http.get<Object>('https://expensetracker-17b08-default-rtdb.firebaseio.com/admin.json')
     .subscribe((data:any)=>{
       console.log(data.categories)
-    })
-    
+    }) 
   }
+
 
   async getTransactions(username:string) {
     try {
       this.transactionList = [];
-      (await getDocs(collection(this.db, "User",username,"Transactions"))).forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        //let transaction = {Amount:`${doc.data()["Amount"]}`}
-        this.transactionList.push({
-          Date:`${doc.data()["Date"]}`,
-          Type:`${doc.data()["Type"]}`,
-          Category:`${doc.data()["Category"]}`,
-          Description:`${doc.data()["Description"]}`,
-          Amount:`${doc.data()["Amount"]}`,
-        })
+      console.log("get txn user",username)
+      const query = await getDocs(collection(this.db, "User",username,"Transactions"));
+      query.forEach((doc) => {
+        //console.log(doc.id, " => ", doc.data());
+        let txn = doc.data()
+        txn['txnID'] = doc.id
+        this.transactionList.push(txn)
       })
-      console.log("get",this.transactionList)
+      console.log(this.transactionList)
       return this.transactionList
-      //return this.transactionList
     }
     catch(error){
       console.log(error)
       return null
     }
   }
+
+  // async getTransactions(username:string) {
+  //   try {
+  //     this.transactionList = [];
+  //     (await getDocs(collection(this.db, "User",username,"Transactions"))).forEach((doc) => {
+  //       console.log(`${doc.id} => ${doc.data()}`);
+  //       //let transaction = {Amount:`${doc.data()["Amount"]}`}
+  //       this.transactionList.push({
+  //         Date:`${doc.data()["Date"]}`,
+  //         Type:`${doc.data()["Type"]}`,
+  //         Category:`${doc.data()["Category"]}`,
+  //         Description:`${doc.data()["Description"]}`,
+  //         Amount:`${doc.data()["Amount"]}`,
+  //       })
+  //     })
+  //     console.log("get",this.transactionList)
+  //     return this.transactionList
+  //     //return this.transactionList
+  //   }
+  //   catch(error){
+  //     console.log(error)
+  //     return null
+  //   }
+  // }
 
   getTransactionList() {
     return this.transactionList

@@ -1,6 +1,6 @@
 <h1 *ngIf="user">USERNAME: {{ user }} </h1>
 
-<app-charts></app-charts>
+<!-- <app-charts></app-charts> -->
 
 <h1>Transaction List</h1>
 
@@ -11,6 +11,8 @@
         <th>Category</th>
         <th>Description</th>
         <th>Amount</th>
+        <th>Edit</th>
+        <th>Delete</th>
 
     </thead>
     <tbody>
@@ -20,6 +22,8 @@
             <td>{{ txn.Category }}</td>
             <td>{{ txn.Description }}</td>
             <td>{{ txn.Amount }}</td>
+            <td>Edit</td>
+            <td>Delete</td>
         </tr>
     </tbody>
 </table>

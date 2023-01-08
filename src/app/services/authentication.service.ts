@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Auth,authState,signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth,authState,getAuth,signInWithEmailAndPassword } from '@angular/fire/auth';
 import { from } from 'rxjs';
 import { Router } from '@angular/router';
+import { browserSessionPersistence, onAuthStateChanged, setPersistence } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,9 @@ export class AuthenticationService {
   // }
 
   login (username:string, password:string) {
-    return from(signInWithEmailAndPassword(this.auth,username,password)
+      setPersistence(this.auth,browserSessionPersistence)
+        .then(() => {
+          return signInWithEmailAndPassword(this.auth,username,password)
                 .then((userCredential) => {
                   this.currentUser = userCredential.user.email
                   console.log("LOGIN",this.currentUser)
@@ -40,10 +43,34 @@ export class AuthenticationService {
                   const errorCode = error.code;
                   const errorMessage = error.message;
                   alert(errorMessage)
-                }))
+                })
+        })
+    
   }
 
   logout() {
     return from(this.auth.signOut());
+  }
+
+  getCurrentUser() {
+    try {
+      onAuthStateChanged(this.auth, (user:any) => {
+        if (user) {
+
+          console.log("GET USER",user)
+          this.currentUser = user;
+          // ...
+        } else {
+          // User is signed out
+          // ...
+        }
+      });
+      return this.currentUser
+      
+    }
+    catch(error){
+      console.log(error)
+      return null
+    }
   }
 }
