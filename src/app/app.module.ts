@@ -21,6 +21,7 @@ import {MatIconModule} from '@angular/material/icon';
 
 import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
+import { ChartsComponent } from './charts/charts.component';
 
 
 
@@ -29,7 +30,8 @@ import { AngularFireModule } from '@angular/fire/compat';
     AppComponent,
     TransactionViewComponent,
     AddTransactionComponent,
-    LoginComponent
+    LoginComponent,
+    ChartsComponent
   ],
   imports: [
     BrowserModule,

@@ -32,9 +32,9 @@ export class AuthenticationService {
   login (username:string, password:string) {
     return from(signInWithEmailAndPassword(this.auth,username,password)
                 .then((userCredential) => {
-                  this.currentUser = userCredential.user
+                  this.currentUser = userCredential.user.email
                   console.log("LOGIN",this.currentUser)
-                  this.router.navigate(['/home',this.currentUser.email])
+                  this.router.navigate(['/home'])
                 })
                 .catch ((error) => {
                   const errorCode = error.code;

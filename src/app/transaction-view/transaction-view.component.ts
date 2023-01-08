@@ -4,6 +4,7 @@ import { TrackerService } from '../services/tracker.service';
 import { AuthenticationService } from '../services/authentication.service';
 import { getAuth, onAuthStateChanged, user } from '@angular/fire/auth';
 
+
 @Component({
   selector: 'app-transaction-view',
   templateUrl: './transaction-view.component.html',

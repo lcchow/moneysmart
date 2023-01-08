@@ -8,7 +8,7 @@ import { TransactionListResolver } from './transaction-list.resolver';
 const routes: Routes = [
   { path:"",component:LoginComponent },
   { path:"add",component:AddTransactionComponent },
-  { path:"home/:email",
+  { path:"home",
     component:TransactionViewComponent,
     resolve: {message:TransactionListResolver}
   }

@@ -48,12 +48,6 @@ export class TrackerService {
       this.transactionList = []
   }
 
-  get CurrentUser$() {
-    return this.authService.currentUser$.pipe(
-
-    )
-  }
-
   getTxnList() {
     return this.txnList
   }
