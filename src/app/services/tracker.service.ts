@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
+import { addDoc, collection, deleteDoc, doc, getDocs, getFirestore } from 'firebase/firestore';
 import { AuthenticationService } from './authentication.service';
 import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
@@ -69,7 +69,7 @@ export class TrackerService {
     try {
       this.transactionList = [];
       console.log("get txn user",username)
-      const query = await getDocs(collection(this.db, "User",username,"Transactions"));
+      const query = await getDocs(collection(this.db, "User","leslie@test.com","Transactions"));
       query.forEach((doc) => {
         //console.log(doc.id, " => ", doc.data());
         let txn = doc.data()
@@ -130,6 +130,18 @@ export class TrackerService {
     }
 
   }
+
+  async deleteTransaction(email:string,txnID:string) {
+    try {
+      console.log("deleting",email,txnID);
+      (await deleteDoc(doc(this.db,"User",email,"Transactions",txnID)));
+      //this.getTransactions(email)
+
+    } catch(error) {
+      console.log(error)
+    }
+  }
+
 
   test() {
     console.log(this.authService.currentUser)

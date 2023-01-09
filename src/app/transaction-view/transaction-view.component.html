@@ -22,8 +22,8 @@
             <td>{{ txn.Category }}</td>
             <td>{{ txn.Description }}</td>
             <td>{{ txn.Amount }}</td>
-            <td>Edit</td>
-            <td>Delete</td>
+            <td><button>Edit</button></td>
+            <td><button (click)="onDelete($event,txn)">Delete</button></td>
         </tr>
     </tbody>
 </table>

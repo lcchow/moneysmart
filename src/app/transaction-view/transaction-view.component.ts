@@ -26,6 +26,7 @@ export class TransactionViewComponent implements OnInit {
   ngOnInit() {
     
     
+    
     onAuthStateChanged(this.auth,async (user) => {
       if (user) {
         this.username = user
@@ -47,6 +48,14 @@ export class TransactionViewComponent implements OnInit {
 
   onAdd() {
     this.router.navigate(["/add"])
+  }
+
+  onDelete(event:any,txn:any) {
+    console.log(event,txn,this.username.email)
+    this.ts.deleteTransaction(this.username.email,txn.txnID)
+    this.router.navigate(["/home"]).then(()=> {
+      window.location.reload();
+    })
   }
 
   async test() {

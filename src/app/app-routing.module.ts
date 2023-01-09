@@ -10,7 +10,7 @@ const routes: Routes = [
   { path:"add",component:AddTransactionComponent },
   { path:"home",
     component:TransactionViewComponent,
-    resolve: {message:TransactionListResolver}
+    resolve: {message:TransactionListResolver},
   }
 ];
 
