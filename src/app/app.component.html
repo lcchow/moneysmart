@@ -1,18 +1,27 @@
 <!-- <app-transaction-view></app-transaction-view> -->
-<mat-toolbar color="primary">
-<h1>Money Smart</h1>
+
+<!-- Login Bar -->
+<body>
+    <nav>
+        <mat-toolbar>
+            <h1 class="navbar-item display-5">Money Smart</h1>
+
+            <div *ngIf="authService.currentUser$ | async as user; else login">
+                <span class="navbar-item">{{ user.email }}</span>
+                <span class="navbar-item"><button class ="secondary" color="secondary" mat-mini-fab (click)="onHome()"><mat-icon>home</mat-icon></button></span>
+                <button class="navbar-item secondary rounded" (click)="onLogout()">Logout</button>
+            </div>
+
+            <ng-template #login>
+                <button class="navbar-item secondary rounded" (click)="onLogin()">Login</button>
+            </ng-template>
+
+        </mat-toolbar>
+    </nav>
 
 
-<div *ngIf="authService.currentUser$ | async as user; else login">
-    <span>{{ user.email }}</span>
-    <span><button mat-mini-fab color="accent" (click)="onHome()"><mat-icon>home</mat-icon></button></span>
-    <button mat-flat-button color="accent" (click)="onLogout()">Logout</button>
-</div>
+    <!-- <app-charts></app-charts> -->
 
-<ng-template #login>
-    <button mat-flat-button color="accent" (click)="onLogin()">Login</button></ng-template>
+    <router-outlet></router-outlet>
 
-</mat-toolbar>
-
-
-<router-outlet></router-outlet>
+</body>

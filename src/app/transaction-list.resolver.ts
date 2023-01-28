@@ -8,14 +8,19 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { delay, Observable, of } from 'rxjs';
 import { TrackerService } from './services/tracker.service';
 import { AuthenticationService } from './services/authentication.service';
+import { TestBed } from '@angular/core/testing';
+import { getDatabase } from 'firebase/database';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionListResolver implements Resolve<any> {
   username: any;
+  // transactions$;
 
-  constructor(private ts:TrackerService, private authService:AuthenticationService) {}
+  constructor(private ts:TrackerService, private authService:AuthenticationService) {
+    // this.transactions$ = ts.getTransactions("leslie@test.com")
+  }
   
   ngOnInit() {
     
@@ -33,14 +38,14 @@ export class TransactionListResolver implements Resolve<any> {
 
 
   
-  async resolve(route:ActivatedRouteSnapshot) {
+resolve(route:ActivatedRouteSnapshot): Observable<any>{
     //const auth = getAuth()
     
     // console.log("router",this.username);
     // console.log("router2",this.authService.currentUser$);
-    console.log("RESOLVE",this.authService.currentUser)
-    this.ts.getTransactions(this.authService.currentUser)
-    //console.log("RESOLVER TXNs",this.ts.getTransactionList())
-    return this.ts.getTransactionList()
+    // console.log("RESOLVE","leslie@test.com")
+    // //console.log("RESOLVER TXNs",this.ts.getTransactionList())
+    // //return this.transactions$
+    return this.ts.getTransactions();
   }
 }

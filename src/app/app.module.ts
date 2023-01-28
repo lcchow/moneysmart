@@ -23,7 +23,7 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { AngularFireModule } from '@angular/fire/compat';
 import { ChartsComponent } from './charts/charts.component';
 import { EditTransactionComponent } from './edit-transaction/edit-transaction.component';
-
+import { TrackerService } from './services/tracker.service';
 
 
 @NgModule({
@@ -50,8 +50,11 @@ import { EditTransactionComponent } from './edit-transaction/edit-transaction.co
     MatIconModule,
     ReactiveFormsModule,
     provideFirestore(() => getFirestore()),
+    
   ],
-  providers: [],
+  providers: [
+    TrackerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

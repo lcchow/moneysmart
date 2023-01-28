@@ -49,11 +49,30 @@ export class AddTransactionComponent implements OnInit {
     if(this.username) {
       console.log("add",this.username.email)
       this.ts.addTransaction(this.username.email,values.date,values.type,values.category,values.description,values.amount)
-      this.router.navigate(['/home'])
+        .subscribe({
+          next: () => {
+            this.router.navigate(['/home']) 
+          },
+          error: (error) => {
+            alert("Failed to add transaction")
+            console.error(error)
+          }
+        });
     } else {
       console.log("Not logged in")
     }
     
   }
+
+  // onAdd(values:any) {
+  //   if(this.username) {
+  //     console.log("add",this.username.email)
+  //     this.ts.addTransaction(this.username.email,values.date,values.type,values.category,values.description,values.amount)
+  //     this.router.navigate(['/home'])
+  //   } else {
+  //     console.log("Not logged in")
+  //   }
+    
+  // }
   
 }

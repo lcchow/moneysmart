@@ -6,18 +6,17 @@
     [formGroup]="form" 
     (ngSubmit)="onLogin(form.value)">
 
-        <mat-form-field apperance="fill">
-            <mat-label>Email Address</mat-label>
-            <input matInput formControlName="username">
-        </mat-form-field>
+            <mat-form-field apperance="fill">
+                <mat-label>Email Address</mat-label>
+                <input matInput class="input-field" formControlName="username">
+            </mat-form-field>
 
-        <mat-form-field>
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password">
-        </mat-form-field>
-
+            <mat-form-field>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" class="input-field" formControlName="password">
+            </mat-form-field>
         <section class="centerElement">
-            <button mat-raised-button color="primary">Login</button>
+            <button class="secondary btn">Login</button>
         </section>
 
     </form>

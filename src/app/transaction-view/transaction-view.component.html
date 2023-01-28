@@ -1,35 +1,46 @@
-<h1 *ngIf="user">USERNAME: {{ user }} </h1>
+<!-- <h1 *ngIf="user">USERNAME: {{ user }} </h1> -->
 
 <!-- <app-charts></app-charts> -->
 
-<h1>Transaction List</h1>
+<!-- <div class="chart-container">
+    <canvas  id="MyChart" >{{ chart }}</canvas>
+</div> -->
+<main>
+    <section id="txn-container" class="shadow rounded">
+        <section id="txnlist-header">
+            <h1 class="display-4">Transaction List</h1>
+        </section>  
 
-<table class="table table-bordered">
-    <thead>
-        <th>Date</th>
-        <th>Type</th>
-        <th>Category</th>
-        <th>Description</th>
-        <th>Amount</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <section id="txnlist-container">
+            <table class="table table-fixed">
+                <thead class="table-light">
+                    <th class="">Date</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
 
-    </thead>
-    <tbody>
-        <tr *ngFor="let txn of transactionList">
-            <td>{{ txn.Date}}</td>
-            <td>{{ txn.Type }}</td>
-            <td>{{ txn.Category }}</td>
-            <td>{{ txn.Description }}</td>
-            <td>{{ txn.Amount }}</td>
-            <td><button>Edit</button></td>
-            <td><button (click)="onDelete($event,txn)">Delete</button></td>
-        </tr>
-    </tbody>
-</table>
+                </thead>
+                <tbody class="table-group-divider table-divider-color">
+                    <tr *ngFor="let txn of transactionList">
+                        <td>{{ txn.date}}</td>
+                        <td>{{ txn.type }}</td>
+                        <td>{{ txn.category }}</td>
+                        <td>{{ txn.description }}</td>
+                        <td>{{ txn.amount }}</td>
+                        <td><button class="secondary btn table-btn">Edit</button></td>
+                        <td><button class="secondary btn table-btn" (click)="onDelete($event,txn._id)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-<button class="btn btn-primary" (click)="onAdd()">Add Transaction</button>
+        <button id="addBtn" class="btn secondary" (click)="onAdd()">Add Transaction</button>
 
-<button (click)="test()">TEST</button>
+    </section>
+</main>
+<!-- <button (click)="test()">TEST</button> -->
 
 

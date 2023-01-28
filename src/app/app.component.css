@@ -1,4 +1,32 @@
+body  {
+    background-color: #E7E9F0;
+}
+
+.navbar-item {
+    vertical-align: middle;
+    margin: 0.5em;
+}
+
+.secondary {
+    background-color: #1a42b3;
+}
+
+
+.secondary:hover {
+    background-color: #535F80;
+}
+
+button.navbar-item {
+    border: none;
+    padding: 0.5em;
+    color: white;
+    width: 80px;
+}
+
 mat-toolbar {
     display:flex;
     justify-content: space-between;
+    background-color: #051747;
+    color: white;
 }
+

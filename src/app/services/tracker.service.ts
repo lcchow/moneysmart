@@ -6,6 +6,7 @@ import { initializeApp } from 'firebase/app';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { getAuth } from 'firebase/auth';
+import { Subject } from 'rxjs';
 
 
 
@@ -29,6 +30,10 @@ export class TrackerService {
   ]
 
   transactionList: any[]
+  
+  private url = "http://localhost:5000";
+  private transactions$: Subject<any> = new Subject()
+  uid: String;
 
   categories = [
     "Food",
@@ -47,6 +52,7 @@ export class TrackerService {
   constructor(private http:HttpClient, private authService:AuthenticationService,
     ) {
       this.transactionList = []
+      this.uid = ""
   }
 
   getTxnList() {
@@ -57,6 +63,11 @@ export class TrackerService {
     return this.categories
   }
 
+  setUser(username:String) {
+    this.uid = username;
+    console.log("SERVICE",this.uid)
+  }
+
   retrieveCategories() {
     this.http.get<Object>('https://expensetracker-17b08-default-rtdb.firebaseio.com/admin.json')
     .subscribe((data:any)=>{
@@ -64,44 +75,18 @@ export class TrackerService {
     }) 
   }
 
-
-  async getTransactions(username:string) {
-    try {
-      this.transactionList = [];
-      console.log("get txn user",username)
-      const query = await getDocs(collection(this.db, "User","leslie@test.com","Transactions"));
-      query.forEach((doc) => {
-        //console.log(doc.id, " => ", doc.data());
-        let txn = doc.data()
-        txn['txnID'] = doc.id
-        this.transactionList.push(txn)
-      })
-      console.log(this.transactionList)
-      return this.transactionList
-    }
-    catch(error){
-      console.log(error)
-      return null
-    }
-  }
-
   // async getTransactions(username:string) {
   //   try {
   //     this.transactionList = [];
-  //     (await getDocs(collection(this.db, "User",username,"Transactions"))).forEach((doc) => {
-  //       console.log(`${doc.id} => ${doc.data()}`);
-  //       //let transaction = {Amount:`${doc.data()["Amount"]}`}
-  //       this.transactionList.push({
-  //         Date:`${doc.data()["Date"]}`,
-  //         Type:`${doc.data()["Type"]}`,
-  //         Category:`${doc.data()["Category"]}`,
-  //         Description:`${doc.data()["Description"]}`,
-  //         Amount:`${doc.data()["Amount"]}`,
-  //       })
+  //     console.log("get txn user",username)
+  //     const query = await getDocs(collection(this.db, "User","leslie@test.com","Transactions"));
+  //     query.forEach((doc) => {
+  //       //console.log(doc.id, " => ", doc.data());
+  //       let txn = doc.data()
+  //       txn['txnID'] = doc.id
+  //       this.transactionList.push(txn)
   //     })
-  //     console.log("get",this.transactionList)
-  //     return this.transactionList
-  //     //return this.transactionList
+  //     return query
   //   }
   //   catch(error){
   //     console.log(error)
@@ -109,38 +94,85 @@ export class TrackerService {
   //   }
   // }
 
-  getTransactionList() {
-    return this.transactionList
-  }
 
-  async addTransaction(email:string,date:number,type:string,category:string,desc:string,amount:number) {
-    try {
-      (await addDoc(collection(this.db,"User",email,"Transactions"), {
-        Date: date,
-        Type: type,
-        Category: category,
-        Description: desc,
-        Amount: amount 
-        }
+
+
+refreshTransactions() {
+  this.http.get(`${this.url}/transactions`)
+    .subscribe(transactions => {
+      this.transactions$.next(transactions);
+      console.log(transactions)
+    })
+}
+
+getTransactions() {
+  this.refreshTransactions();
+  return this.transactions$
+}
+
+// getTransactionList() {
+//   return this.transactionList
+// }
+
+
+addTransaction(email:string,date:number,type:string,category:string,desc:string,amount:number) {
+  let transaction = {
+    email: email,
+    date: date,
+    type: type,
+    category: category,
+    description: desc,
+    amount: amount
+  }
+  return this.http.post(`${this.url}/${this.uid}transactions`,transaction,{ responseType: 'text'})
+}
+
+addTransaction2(email:string,date:number,type:string,category:string,desc:string,amount:number) {
+  let transaction = {
+    email: email,
+    date: date,
+    type: type,
+    category: category,
+    description: desc,
+    amount: amount
+  }
+  return this.http.post(`${this.url}/${this.uid}/transactions`,transaction,{ responseType: 'text'})
+}
+
+  // async addTransaction(email:string,date:number,type:string,category:string,desc:string,amount:number) {
+  //   try {
+  //     (await addDoc(collection(this.db,"User",email,"Transactions"), {
+  //       Date: date,
+  //       Type: type,
+  //       Category: category,
+  //       Description: desc,
+  //       Amount: amount 
+  //       }
       
-      ))
-      console.log("Adding for",email)
-    } catch(error) {
-      console.log(error)
-    }
+  //     ))
+  //     console.log("Adding for",email)
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
 
+  // }
+
+deleteTransaction(txnId:string) {
+  console.log(`${txnId}`)
+  return this.http.delete(`${this.url}/transactions/delete/${txnId}`, { responseType: 'text' })
   }
 
-  async deleteTransaction(email:string,txnID:string) {
-    try {
-      console.log("deleting",email,txnID);
-      (await deleteDoc(doc(this.db,"User",email,"Transactions",txnID)));
-      //this.getTransactions(email)
+  // async deleteTransaction(email:string,txnID:string) {
+  //   try {
+  //     console.log("deleting",email,txnID);
+  //     (await deleteDoc(doc(this.db,"User",email,"Transactions",txnID)));
+  //     //this.getTransactions(email)
 
-    } catch(error) {
-      console.log(error)
-    }
-  }
+  //   } catch(error) {
+  //     console.log(error)
+  //   }
+  // }
+
 
 
   test() {

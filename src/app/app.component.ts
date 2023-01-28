@@ -1,14 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackerService } from './services/tracker.service';
 import { environment } from 'src/environments/environment';
 import { AuthenticationService } from './services/authentication.service';
 import { Router } from '@angular/router';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { HttpClient } from '@angular/common/http';
+import { TrackerService } from './services/tracker.service';
+import { Observable } from 'rxjs';
+
+interface Transaction {
+  date: number;
+  type: string;
+  category: string;
+  description: string;
+  amount: number;
+}
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [ TrackerService ]
 })
 
 export class AppComponent implements OnInit {
@@ -16,22 +28,27 @@ export class AppComponent implements OnInit {
   title = 'expensetracker';
   username:any;
 
-  constructor(private ts:TrackerService, public authService:AuthenticationService,
+  transactions$: Observable<any> = new Observable();
+
+  constructor(private http: HttpClient,private ts:TrackerService, public authService:AuthenticationService,
     private router:Router) {
-    this.txnList = this.ts.getTxnList()
+    this.txnList = this.ts.getTxnList();
   }
 
   ngOnInit() {
     const auth = getAuth()
     onAuthStateChanged(auth,(user) => {
       if (user) {
-        this.username = user
-        //console.log(this.username)
+        this.username = user.uid
+        this.ts.setUser(this.username)
+        console.log(this.username)
       } else {
         console.log("Init Not Logged In")
       }
     })
+
   }
+
 
   onLogin() {
     this.router.navigate(['/']);

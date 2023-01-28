@@ -2,7 +2,7 @@
     max-width: 400px;
     margin:auto;
 
-    background-color: rgb(227, 223, 235);
+    background-color: #FEFEFE;
     padding: 50px;
     border-radius: 30px;
     margin-top: 100px;
@@ -10,9 +10,32 @@
 
 .formContainer mat-form-field {
     width:100%;
+    margin-top: 1em;
+    height: 60px;
 }
 
 .centerElement {
     display: flex;
     justify-content: center;
 }
+
+.secondary {
+    background-color: #1a42b3;
+}
+
+
+.secondary:hover {
+    background-color: #535F80;
+    color: white;
+}
+
+button {
+    border: none;
+    padding: 0.5em;
+    color: white;
+    width: 100px;
+}
+
+/* .input-field {
+    margin: 1em;
+} */
